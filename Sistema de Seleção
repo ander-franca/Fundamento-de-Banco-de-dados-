@@ -1,0 +1,129 @@
+CREATE TABLE candidato( cpf_candidato char (15) not null,
+                        num_inscricao integer not null,
+                        p_name varchar (20) not null,
+                        u_name varchar (50) not null,
+                        data_nasc date not null,
+                        sexo char,
+                        telefone char (12) not null,
+					    senha char(12) not null
+);
+ALTER TABLE candidato
+ADD CONSTRAINT PK_CANDIDATO PRIMARY KEY (cpf_candidato);
+
+
+CREATE TABLE curso( id_curso integer not null,
+                    id_universidade integer not null,
+                    nome varchar (100) not null,
+                    qtd_semestre integer not null,
+                    turno varchar (20) not null,
+                    qtd_vagas integer not null,
+                    nota_de_corte integer not null,
+                    area_peso varchar not null
+                    
+);
+ALTER TABLE curso ADD CONSTRAINT PK_CURSO PRIMARY KEY (id_curso);
+
+ALTER TABLE curso ADD CONSTRAINT CURSOFK FOREIGN KEY 
+(id_universidade)REFERENCES universidade (id_universidade);
+
+
+CREATE TABLE universidade( id_universidade integer not null,
+                           nome varchar (100) not null,
+                           tipo_uni varchar not null,
+                           telefone char (12) not null,
+                           e_mail varchar (100) not null
+
+
+);
+ALTER TABLE universidade ADD CONSTRAINT PK_UNIVERSIDADE PRIMARY KEY (id_universidade);
+
+
+CREATE TABLE c_escolhe_v( id_vaga char (6) not null,
+                          id_crs integer not null,
+                          cand_cpf char (15) not null,
+                          opcao varchar (40) not null
+
+);
+/* Referência [candidato & curso]*/
+ALTER TABLE c_escolhe_v ADD CONSTRAINT C_ESCOLHE_VFK FOREIGN KEY 
+(cand_cpf )REFERENCES candidato (cpf_candidato );
+
+ALTER TABLE c_escolhe_v ADD CONSTRAINT C_ESCOLHE_VCFK FOREIGN KEY 
+(id_crs)REFERENCES curso (id_curso);
+
+
+/*entidade fraca*/
+CREATE TABLE nota( id_candidato char (15) not null,
+		 			des_area varchar (30) not null,
+                   valo_nota float (7) not null
+);
+ALTER TABLE nota ADD CONSTRAINT PK_NOTA PRIMARY KEY (id_candidato);
+
+ALTER TABLE nota ADD CONSTRAINT NOTAFK FOREIGN KEY 
+(id_candidato)REFERENCES candidato (cpf_candidato);
+
+
+--INSERT UNIVERSIDADE--
+INSERT INTO universidade VALUES (1245, 'UNIVERSIDADE FEDERAL DO CEARÁ','PUBLICA', 8533667339, 'ouvidoria@ufc.br');
+INSERT INTO universidade VALUES (8952, 'UNIVERSIDADE ESTADUAL DO CEARÁ','PUBLICA' , 8531019605, 'assecom@uece.br');
+INSERT INTO universidade VALUES (4251, 'UNIVERSIDADE DO SERTÃO CENTRAL', 'PUBLICA' , 8533673359, 'ouvidoria@usc.br');
+INSERT INTO universidade VALUES (9271, 'UNIVERSIDADE DO MACIÇO', 'PUBLICA' , 8533447539, 'contato@um.br');
+INSERT INTO universidade VALUES (1526, 'UNIVERSIDADE DE OCARA', 'PUBLICA', 8533657879, 'ouvidoria@udc.br');
+INSERT INTO universidade VALUES (9283, 'UNIVERSIDADE METROPOLITANA', 'PARTICULAR', 8533668064, 'portal@umt.br');
+INSERT INTO universidade VALUES (6543, 'UNIVERSIDADE ADVENTISTA ', 'PARTICULAR' , 8533669051, 'ouvidoria@uad.br');
+INSERT INTO universidade VALUES (5362, 'UNIVERSIDADE DE QUIXADÁ', 'PUBLICA', 8533987393, 'ouvidoria@ufc.br');
+INSERT INTO universidade VALUES (2837, 'UNIVERSIDADE NOSSA SENHORA DAS VITORIAS', 'PARTICULAR', 8533689547, 'ouvidoria@ufc.br');
+INSERT INTO universidade VALUES (2319, 'UNIVERSIDADE DE CIÊNCIAS E LETRAS', 'PUBLICA' , 8533556497, 'ouvidoria@ufc.br');
+
+--INSERT CANDIDATO--
+INSERT INTO candidato VALUES (12345678910, 123456, 'ANTONIO', 'ANDERSON DE FRANÇA', '1996-02-03', 'M', 85981764522);
+INSERT INTO candidato VALUES (23489648409, 345612, 'MARIA', 'NAZARE FILHA', '1997-04-12', 'F', 85983789456);
+INSERT INTO candidato VALUES (12569815405, 159487, 'JOAQUINA', 'JOSEFA SOUZA', '1995-12-12', 'F', 85981558861);
+INSERT INTO candidato VALUES (56482914756, 956231, 'LETÍCIA', 'DA SILVA MARTINS', '2003-03-31', 'F', 85981541549);
+INSERT INTO candidato VALUES (03578945615, 032147, 'PAULO', 'JOSE COSTA', '1998-01-03', 'M', 11985766522);
+INSERT INTO candidato VALUES (36925814720, 852147, 'JOÃO', 'CARLOS DE OLIVERIRA', '2000-10-10', 'M', 85992568751);
+INSERT INTO candidato VALUES (85296314705, 963258, 'CARLOS', 'DANIEL CAVALCANTE', '1994-05-08', 'M', 85988794532);
+INSERT INTO candidato VALUES (98712345608, 789963, 'DANIEL', 'SALAZAR SILVA', '1996-02-28', 'M', 85983674252);
+INSERT INTO candidato VALUES (95184726317, 032145, 'MARIA', 'DO PERPETO SOCORRO', '1996-02-03', 'F', 11989562314);
+INSERT INTO candidato VALUES (26359874103, 654321, 'ANTONIO', 'DE FRANÇA DA SILVA', '1999-04-30', 'M', 85997756452);
+
+--INSERT CURSO--
+INSERT INTO curso VALUES (76531, 6543 ,'MEDICINA', 12, 'INTEGRAL', 30, 807.24, 'CIÊNCIAS DA NATUREZA');
+INSERT INTO curso VALUES (54327, 1245 , 'REDE DE COMPUTADORES', 6, 'NOITE', 45, 596.16, 'EXATAS');
+INSERT INTO curso VALUES (26517, 4251 , 'MUSICA', 6, 'MANHÃ', 30, 619.04, 'HUMANAS');
+INSERT INTO curso VALUES (76538, 9271, 'ENGENHARIA DE SOFTWARE', 8, 'TARDE', 45, 681.20, 'EXATAS');
+INSERT INTO curso VALUES (74930, 1245 , 'CIÊNCIAS DA COMPUTAÇÃO', 8, 'MANHÃ', 45, 628.14, 'EXATAS');
+INSERT INTO curso VALUES (09736, 8952 , 'ENGENHARIA DE MINAS', 10, 'TARDE', 30, 600.82, 'EXATAS');
+INSERT INTO curso VALUES (24516, 9283 , 'ECONOMIA ECOLOGICA', 8, 'NOITE', 40, 624.78, 'CIENCIAS DA NATUREZA');
+INSERT INTO curso VALUES (26738, 2837 , 'DIREITO', 10, 'INTEGRAL', 30, 768.72, 'HUMANAS');
+INSERT INTO curso VALUES (83920, 2837 , 'ODONTOLOGIA', 10, 'MANHÃ', 30, 755.42, 'CIENCIAS DA NATUREZA');
+INSERT INTO curso VALUES (34672, 5362 , 'ARQUITETURA E URBANISMO', 10, 'TARDE', 40, 734.70, 'EXATAS');
+INSERT INTO curso VALUES (87364, 2319 , 'PSICOLOGIA', 30,'TARDE', 20, 742.70, 'HUMANAS');
+INSERT INTO curso VALUES (14523, 1526 , 'ENGENHARIA MECANICA', 30,'MANHA', 20, 734.70, 'EXATAS');
+
+--INSERT C_ESCOLHE_V--							
+--INSERT INTO c_escolhe_v VALUES(id_vaga, id_curso, cpf_cand, p_area, p_opcao)										
+INSERT INTO c_escolhe_v VALUES( 83743, 54327, 12345678910,'COTA');										
+INSERT INTO c_escolhe_v VALUES( 74383, 76531, 23489648409,'AMPLA');										
+INSERT INTO c_escolhe_v VALUES( 83293, 76538, 12569815405,'AMPLA');									
+INSERT INTO c_escolhe_v VALUES( 09273, 34672, 56482914756, 'COTA');										
+INSERT INTO c_escolhe_v VALUES( 73920, 24516, 03578945615, 'AMPLA');										
+INSERT INTO c_escolhe_v VALUES( 63829, 87364, 36925814720, 'COTA');									
+INSERT INTO c_escolhe_v VALUES( 68298, 54327, 85296314705, 'COTA');										
+INSERT INTO c_escolhe_v VALUES( 82933, 26738, 98712345608, 'AMPLA');										
+INSERT INTO c_escolhe_v VALUES( 25162, 14523, 95184726317, 'COTA');									
+INSERT INTO c_escolhe_v VALUES( 98483, 34672, 26359874103, 'COTA');										
+						
+--INSERT NOTA--                             
+INSERT INTO nota VALUES (12345678910, 'EXATAS' ,598.67);
+INSERT INTO nota VALUES (23489648409, 'CIENCIAS DA NATUREZA' ,624.80);
+INSERT INTO nota VALUES (12569815405, 'EXATAS', 681);
+INSERT INTO nota VALUES (56482914756, 'EXATAS', 768);
+INSERT INTO nota VALUES (03578945615, 'HUMANAS', 742.70);
+INSERT INTO nota VALUES (36925814720, 'EXATAS', 683.20);
+INSERT INTO nota VALUES (85296314705, 'CIENCIAS DA NATUREZA', 638.79);
+INSERT INTO nota VALUES (98712345608, 'CIENCIAS DA NATUREZA', 755.80);
+INSERT INTO nota VALUES (95184726317, 'HUMANAS', 742.70);
+INSERT INTO nota VALUES (26359874103, 'HUMANAS', 800.50);
+
+
